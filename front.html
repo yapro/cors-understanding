@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>YaPro.ru</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html,body {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<input type="button" value="test1" onclick="test1()">
+<script>
+    let invocation = new XMLHttpRequest();
+    let url = 'https://back.local:8902';
+    let body = '{"login":"yapro", "password":"pa$$word"}';
+
+    function test1() {
+        invocation.open('POST', url + "/test1", true);
+        invocation.send(body);
+    }
+</script>
+</body>
+</html>

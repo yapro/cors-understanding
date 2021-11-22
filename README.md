@@ -8,24 +8,44 @@ Set-Cookie: testname=63ef085e4d9f0b20b9f099e1d0dbf123; path=/; domain=back.local
 ```
 
 Итак, имеем 2 сайта: front.local и back.local, а далее: 
-* сайт front.local всегда посылает запрос на авторизацию (XHR из браузера - с помощью Ajax)
-* сайт back.local всегда отвечает успешной авторизацией (но с разными флагами http-заголовка Set-Cookie)
+* сайт front.local посылает запрос на страницу https://back.local:8902/page-set-cookies (XHR из браузера)
+* сайт back.local всегда отвечает успешно (но с разными флагами http-заголовка Set-Cookie)
 
-1. При такой куке на оба сайта не установлена кука:
+При следующих куки-флагах на сайт back.local не будет установлена кука:
 ```sql
-Set-Cookie: test1=t1;
+Set-Cookie: test0=t0;
+Set-Cookie: test1=t1; path=/;
+Set-Cookie: test2=t2; path=/; domain=back.local;
+Set-Cookie: test3=t3; path=/; domain=back.local; secure;
+Set-Cookie: test4=t4; path=/; domain=back.local; secure; HttpOnly;
+Set-Cookie: test7=t7; path=/; domain=back.local; SameSite=none
+Set-Cookie: test8=t8; path=/; SameSite=none
+Set-Cookie: test9=t9; SameSite=none
 ```
-2. При такой куке на оба сайта не установлена кука:
+При следующих куки-флагах на сайт back.local будет установлена кука:
 ```sql
-Set-Cookie: test2=t2; path=/; 
+Set-Cookie: test5=t5; path=/; domain=back.local; secure; HttpOnly; SameSite=none
+Set-Cookie: test6=t6; path=/; domain=back.local; secure; SameSite=none
 ```
-3. При такой куке на оба сайта не установлена кука:
+Напомню, что наличие атрибута HttpOnly говорит браузеру, что cookie не должна быть доступна через скриптовые языки браузера (например JavaScript).
+
+Еще больше подробностей на странице: https://yapro.ru/article/6506
+
+Интересно - если в браузере просто открыть страницу https://back.local:8902/page-set-cookies то браузер запомнит куки:
 ```sql
-Set-Cookie: test3=t3; path=/; domain=back.local;
+Set-Cookie: test0=t0;
+Set-Cookie: test1=t1; path=/;
+Set-Cookie: test2=t2; path=/; domain=back.local;
+Set-Cookie: test3=t3; path=/; domain=back.local; secure;
+Set-Cookie: test4=t4; path=/; domain=back.local; secure; HttpOnly;
+Set-Cookie: test5=t5; path=/; domain=back.local; secure; HttpOnly; SameSite=none
+Set-Cookie: test6=t6; path=/; domain=back.local; secure; SameSite=none
 ```
-4. При такой куке на оба сайта не установлена кука:
+А следующие куки будут проигнорированы (браузер их не запомнит):
 ```sql
-Set-Cookie: test4=t4; path=/; domain=back.local; secure;
+Set-Cookie: test7=t7; path=/; domain=back.local; SameSite=none
+Set-Cookie: test8=t8; path=/; SameSite=none
+Set-Cookie: test9=t9; SameSite=none
 ```
 
 ### Test

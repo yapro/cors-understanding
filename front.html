@@ -12,11 +12,13 @@
     </style>
 </head>
 <body>
-<input type="button" value="test1" onclick="test1()">
-<p>Если нажать по кнопке первый раз: браузер сделает XHR запрос на сайт back.local и сохранит на сайте back.local куку test1f=f1</p>
-<p>Если нажать по кнопке второй раз: браузер сделает XHR запрос на сайт back.local при этом в запросе будет указана кука test1f=f1
-    (словно запрос идет от сайта back.local, а по коду ниже видно, что мы никаких кук не передаем, браузер делает это за нас
+<input type="button" value="Send request to https://back.local:8902/page-set-cookies" onclick="test1()">
+<p>Если нажать по кнопке первый раз: браузер сделает XHR запрос на сайт back.local и сохранит на сайте back.local куки: test5=t5, test6=t6</p>
+<p>Если нажать по кнопке второй раз: браузер сделает XHR запрос на сайт back.local при этом в запросе будут указаны куки: test5=t5, test6=t6
+    (словно запрос идет от сайта back.local, а по коду ниже видно, что мы никаких cookies не передаем, браузер делает это за нас
     благодаря тому, что мы в XMLHttpRequest указали withCredentials = true)</p>
+<p>Открыть <a href="https://back.local:8902/" target="_blank">https://back.local:8902/</a></p>
+<p>Открыть <a href="https://back.local:8902/page-set-cookies" target="_blank">https://back.local:8902/page-set-cookies</a></p>
 <script>
     let xhr = new XMLHttpRequest();
         // попросим браузер запомнить куки на сайте back.local (куки которые выставляет back.local)
@@ -24,12 +26,13 @@
         xhr.withCredentials = true;
         // xhr.setRequestHeader("Content-Type", "application/json");
     let url = 'https://back.local:8902';
-    let body = '{"login":"yapro", "password":"pa$$word"}';
+    let body = '{"any":"string"}';
 
     function test1() {
-        xhr.open('POST', url + "/test1", true);
+        xhr.open('POST', url + "/page-set-cookies", true);
         xhr.send(body);
     }
+
 </script>
 </body>
 </html>

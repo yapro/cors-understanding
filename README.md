@@ -65,3 +65,20 @@ docker run -it --rm --net=host -v $(pwd)/default.conf:/etc/nginx/conf.d/default.
 Открываем в браузере оба адреса и соглашаемся использовать самоподписные сертификаты:
 - front: https://front.local:8901/
 - back:  https://back.local:8902/
+
+### Поддомен
+
+Провел опыт на браузере Chrome, считает ли он запросы на поддомен - запросами CORS, в итоге:
+
+* с https://front.local:8901 на https://sub.front.local:8902/page-set-cookies - это CORS запрос
+* с https://front.local:8901 на https://sub.front.local:8901/page-set-cookies - это CORS запрос
+* с https://front.local на https://sub.front.local/page-set-cookies - это CORS запрос (используется порт 443)
+
+Таким образом, если нет желания возиться с CORS, следует использовать проксирование запросов по префиксу, например:
+```
+location ^~ /backend/ {
+    proxy_set_header Host yapro.backend;
+    proxy_pass http://127.0.0.1:80;
+    proxy_redirect default;
+}
+```
